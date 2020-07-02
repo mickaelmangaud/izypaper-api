@@ -61,6 +61,10 @@ server.applyMiddleware({
   cors: corsOptions
 });
 
+app.get('/cookies', (req, res, next) => {
+  res.send(`${req.cookies}`);
+})
+
 /*** 404 - Not found ***/
 app.use(notFoundHandler);
 
