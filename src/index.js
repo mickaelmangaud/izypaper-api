@@ -31,8 +31,8 @@ app.use(cookieSession({
   keys: [env.session.COOKIE_KEY],
   // httpOnly: true, /** true is default **/
   domain: env.COOKIE_DOMAIN, 
-  secure: true,
-  name: 'izypaper',
+  // secure: true,
+  // name: 'izypaper',
   sameSite: 'none',
 }));
 
