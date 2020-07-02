@@ -29,9 +29,9 @@ const server = new ApolloServer({
 app.use(cookieSession({
   maxAge: 24 * 60 * 60 * 1000, // Session is valid for 24 hours
   keys: [env.session.COOKIE_KEY],
-  // httpOnly: true, /** true is default **/
+  httpOnly: true, /** true is default **/
   domain: env.COOKIE_DOMAIN, 
-  // secure: true,
+  secure: true,
   name: 'izypaper',
   sameSite: 'none',
   path: '/'
