@@ -67,6 +67,8 @@ app.use(notFoundHandler);
 /* Custom error handler */
 app.use(errorHandler);
 
+console.log ('test');
+
 app.listen({ port: PORT }, () =>
   console.log(`Server ready at ${BASE_API_URL}${server.graphqlPath}`)
 );
