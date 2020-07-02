@@ -30,7 +30,7 @@ app.use(cookieSession({
   maxAge: 24 * 60 * 60 * 1000, // Session is valid for 24 hours
   keys: [env.session.COOKIE_KEY],
   // httpOnly: true, /** true is default **/
-  domain: env.COOKIE_DOMAIN, 
+  domain: env.BASE_API_URL, 
   // secure: true,
   // name: 'izypaper',
   sameSite: 'none',
