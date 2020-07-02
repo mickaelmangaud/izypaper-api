@@ -32,7 +32,7 @@ app.use(cookieSession({
   // httpOnly: true, /** true is default **/
   domain: env.BASE_API_URL, 
   // secure: true,
-  // name: 'izypaper',
+  name: 'izypaper',
   sameSite: 'none',
   path: '/'
 }));
