@@ -34,6 +34,7 @@ app.use(cookieSession({
   // secure: true,
   // name: 'izypaper',
   sameSite: 'none',
+  path: '/'
 }));
 
 /*** Passport initialize ***/
