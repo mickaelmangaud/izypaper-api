@@ -31,7 +31,6 @@ router.post('/login', passport.authenticate('local'), (req, res, next) => {
   
   console.log('login route', req.user)
   if (req.user) {
-    res.cookie('my-test-cookie', 'supervalue')
     res.json(req.user);
   }
 });
