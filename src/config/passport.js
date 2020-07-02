@@ -18,7 +18,6 @@ passport.deserializeUser(async (id, done) => {
 passport.use(new LocalStrategy(
   { usernameField: 'email'},
   async (email, password, done) => {
-    console.log('passport local strategy', email, password)
     /* Ici la requete POST doit bien prendre un "username" et non un "email" */
     const user = await UserDAO.findUserByEmail(email);
     if (!user) {
