@@ -31,29 +31,26 @@ app.use(cookieSession({
   keys: [env.session.COOKIE_KEY],
   httpOnly: true, /** true is default **/
   domain: env.COOKIE_DOMAIN, 
-  secure: true,
+  // secure: true,
   name: 'izypaper',
   sameSite: 'none',
   path: '/',
-  secureProxy: true,
+  // secureProxy: true,
 }));
-
-/*** Passport initialize ***/
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(express.json());
-app.use(cors({ 
-  credentials: true,
-  origin: CLIENT_URL  /* Autorise l'envoi des cookies sur ce domaine */
-}));
-
-/* Register Express Auth Routes */
-registerRoutes(app);
 
 const corsOptions = {
   origin: CLIENT_URL,
   credentials: true
 };
+
+/*** Passport initialize ***/
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.json());
+app.use(cors(corsOptions));
+
+/* Register Express Auth Routes */
+registerRoutes(app);
 
 server.applyMiddleware({ 
   app,
