@@ -25,6 +25,11 @@ const server = new ApolloServer({
   }),
 });
 
+console.log('cookie domain', env.COOKIE_DOMAIN);
+console.log('client url', CLIENT_URL);
+console.log('base api url', BASE_API_URL);
+
+
 /*** Use cookie sessions ***/
 app.use(cookieSession({
   maxAge: 24 * 60 * 60 * 1000, // Session is valid for 24 hours
@@ -33,6 +38,7 @@ app.use(cookieSession({
   domain: env.COOKIE_DOMAIN, 
   secure: true,
   name: 'izypaper',
+  sameSite: 'none',
 }));
 
 /*** Passport initialize ***/
@@ -64,6 +70,6 @@ app.use(notFoundHandler);
 /* Custom error handler */
 app.use(errorHandler);
 
-app.listen({ port:PORT }, () =>
+app.listen({ port: PORT }, () =>
   console.log(`Server ready at ${BASE_API_URL}${server.graphqlPath}`)
 );
