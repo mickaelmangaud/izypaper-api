@@ -21,7 +21,7 @@ passport.use(new LocalStrategy(
     /* Ici la requete POST doit bien prendre un "username" et non un "email" */
     const user = await UserDAO.findUserByEmail(email);
     if (!user) {
-      console.log('utilisateur existe pas')
+      // console.log('utilisateur existe pas')
       return done(null, false, { message: 'utilsateur existe pas message'});
     }
     return done(null, user);
@@ -32,12 +32,12 @@ passport.use(new LocalStrategy(
 passport.use(new GoogleStrategy({
     clientID: env.oauth.google.CLIENT_ID,
     clientSecret: env.oauth.google.CLIENT_SECRET,
-    callbackURL: "http://localhost:5000/auth/google/callback",
+    callbackURL: `${env.BASE_API_URL}/auth/google/callback`,
   },
   async (accessToken, refreshToken, profile, done) => {
     const user = await UserDAO.findByGoogleId(profile.id);
     if (!user) {
-        console.log('Passport google strategy : Utilisateur existe pas')
+        // console.log('Passport google strategy : Utilisateur existe pas')
         const { email, given_name, family_name, picture, locale } = profile._json;
 
         const newUser = await UserDAO.create({
@@ -50,7 +50,7 @@ passport.use(new GoogleStrategy({
         });
         return done(null, newUser);
     }
-    console.log('Passport google strategy : Utilisateur existe')
+    // console.log('Passport google strategy : Utilisateur existe')
     return done(null, user);
   }
 ));
@@ -59,7 +59,7 @@ passport.use(new GoogleStrategy({
 passport.use(new FacebookStrategy({
     clientID: env.oauth.facebook.APP_ID,
     clientSecret: env.oauth.facebook.SECRET_KEY,
-    callbackURL: "http://localhost:5000/auth/facebook/callback",
+    callbackURL: `${env.BASE_API_URL}/auth/facebook/callback`,
   },
   async (accessToken, refreshToken, profile, done) => {
     const user = await UserDAO.findByFacebookId(profile.id);

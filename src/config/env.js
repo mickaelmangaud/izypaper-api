@@ -2,6 +2,7 @@ const env = {
   NODE_ENV: process.env.NODE_ENV,
   BASE_API_URL: process.env.BASE_API_URL,
   CLIENT_URL: process.env.CLIENT_URL,
+  COOKIE_DOMAIN: process.env.COOKIE_DOMAIN,
   PORT: process.env.PORT,
   MONGODB_URL: process.env.MONGODB_URL,
   tokens: {
