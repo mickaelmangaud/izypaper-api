@@ -13,11 +13,8 @@ import cors from 'cors';
 import './config/passport';
 import './db';
 
-const CLIENT_URL = env.NODE_ENV === 'development' ? 'http://localhost:8000' : env.CLIENT_URL;
-const PORT = env.NODE_ENV === 'development' ? env.PORT : process.env.PORT;
-
 const corsOptions = {
-  origin: env.NODE_ENV === 'production' ? 'https://izypaper.netlify.app' : 'http://localhost:8000',
+  origin: env.CLIENT_URL,
   credentials: true
 };
 
@@ -37,12 +34,12 @@ app.use(cors(corsOptions));
 
 /*** Use cookie sessions ***/
 app.use(expressSession({
-  secret: 'supersecret',
+  secret: env.session.COOKIE_SESSION_SECRET,
   resave: true,
   saveUninitialized: true
 }));
 
-app.use(cookieParser('supersecret'));
+app.use(cookieParser(env.session.COOKIE_SESSION_SECRET));
 
 /*** Passport initialize ***/
 app.use(passport.initialize());
@@ -64,6 +61,6 @@ app.use(notFoundHandler);
 /* Custom error handler */
 app.use(errorHandler);
 
-app.listen({ port: PORT }, () =>
+app.listen({ port: env.PORT }, () =>
   console.log(`Server ready at ${env.BASE_API_URL}${server.graphqlPath}`)
 );
