@@ -47,7 +47,7 @@ class UserDao {
 
   async findUserByEmail(email) {
     return await User.findOne({ email })
-      .select('_id email')
+      .select('_id email password')
   }
 
   async findAll(query) {

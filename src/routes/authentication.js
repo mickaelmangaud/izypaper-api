@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import { ConflictError } from '../error';
+import { Router, json } from 'express';
+import { ConflictError, UnauthorizedError } from '../error';
 import { UserDAO } from '../dao';
 import passport from 'passport';
 import bcrypt from 'bcryptjs';
@@ -10,7 +10,7 @@ router.post('/register', async (req, res, next) => {
   // TODO Valider le payload
   const user = await UserDAO.findUserByEmail(req.body.email);
   if (user) {
-    next(new ConflictError(`User with email ${user.email} already exists`));
+    return next(new ConflictError(`User with email ${user.email} already exists`));
   }
 
   const salt = bcrypt.genSaltSync(10);
@@ -26,28 +26,26 @@ router.post('/register', async (req, res, next) => {
   })
 });
 
-/*** Local Passport ***/
-router.post('/login', passport.authenticate('local'), (req, res, next) => {
-  
-  console.log('login route', req.user)
-  if (req.user) {
-    res.json(req.user);
-  }
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) return next(err);
+    if (!user) {
+      next(new UnauthorizedError('Email ou mot de pass incorrect'));
+    }
+
+    req.logIn(user, err => {
+      if (err) next(err);
+      res.json({user});
+      console.log(req.user)
+    })
+
+
+  })(req, res, next);
 });
 
-/*** Google OAuth ***/
-router.get('/google',passport.authenticate('google', { scope: ['profile'] }));
-
-router.get('/google/callback', passport.authenticate('google'));
-
-/*** Facebook OAuth ***/
-router.get('/facebook',passport.authenticate('facebook', { scope: 'email' }));
-
-router.get('/facebook/callback', passport.authenticate('facebook'));
-
-/** Logout user  **/
-router.get('/logout', (req, res, next) => {
-  req.logout();
+router.get('/user', (req, res, next) => {
+  console.log('user api route', req.user);
+  res.json({user: req.user });
 });
 
 export default router;

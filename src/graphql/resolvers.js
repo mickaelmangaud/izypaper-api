@@ -13,10 +13,9 @@ const Query = {
     return await UserDAO.findById(id)
   },
   users: async (_, {}, ctx) => {
-    // if (!ctx.user) {
-    //   throw new UnauthorizedError('Pas authorisé')
-    // }
-    console.log('ctx in users resolver', ctx)
+    if (!ctx.user) {
+      throw new UnauthorizedError('Pas authorisé')
+    }
     return await UserDAO.findAll();
   },
 }
