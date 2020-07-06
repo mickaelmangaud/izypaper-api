@@ -12,7 +12,7 @@ import './config/passport';
 import './db';
 
 const CLIENT_URL = env.NODE_ENV === 'development' ? 'http://localhost:8000' : env.CLIENT_URL;
-const BASE_API_URL = env.NODE_ENV === 'development' ? 'http://localhost:5000' : env.BASE_API_URL;
+// const BASE_API_URL = env.NODE_ENV === 'development' ? 'http://localhost:5000' : env.BASE_API_URL;
 const PORT = env.NODE_ENV === 'development' ? env.PORT : process.env.PORT;
 
 const app = express();
@@ -71,5 +71,5 @@ app.use(errorHandler);
 console.log ('test');
 
 app.listen({ port: PORT }, () =>
-  console.log(`Server ready at ${BASE_API_URL}${server.graphqlPath}`)
+  console.log(`Server ready at ${env.BASE_API_URL}${server.graphqlPath}`)
 );

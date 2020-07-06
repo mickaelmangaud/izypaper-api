@@ -1,6 +1,6 @@
 const env = {
   NODE_ENV: process.env.NODE_ENV,
-  BASE_API_URL: process.env.BASE_API_URL,
+  BASE_API_URL: process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : 'https://izypaper.netlify.app',
   CLIENT_URL: process.env.CLIENT_URL,
   COOKIE_DOMAIN: process.env.COOKIE_DOMAIN,
   PORT: process.env.PORT,
