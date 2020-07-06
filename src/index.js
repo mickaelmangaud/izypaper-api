@@ -17,7 +17,7 @@ const CLIENT_URL = env.NODE_ENV === 'development' ? 'http://localhost:8000' : en
 const PORT = env.NODE_ENV === 'development' ? env.PORT : process.env.PORT;
 
 const corsOptions = {
-  origin: 'http://localhost:8000',
+  origin: env.NODE_ENV === 'production' ? 'https://izypaper.netlify.app' : 'http://localhost:8000',
   credentials: true
 };
 
