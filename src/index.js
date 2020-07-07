@@ -6,12 +6,13 @@ import { registerRoutes } from './routes';
 import passport from 'passport';
 import bodyParser from 'body-parser';
 import expressSession from 'express-session';
-import cookieParser from 'cookie-parser';
 import { typeDefs, resolvers } from './graphql';
 import { notFoundHandler, errorHandler } from './middleware';
+import connectMongo from 'connect-mongo';
 import cors from 'cors';
 import './config/passport';
 import './db';
+import { db } from './db';
 
 const corsOptions = {
   origin: env.CLIENT_URL,
@@ -32,14 +33,22 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 
+const MongoStore = connectMongo(expressSession);
+
 /*** Use cookie sessions ***/
 app.use(expressSession({
   secret: env.session.COOKIE_SESSION_SECRET,
-  resave: true,
-  saveUninitialized: true
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24,
+  },
+  store: new MongoStore({
+    mongooseConnection: db,
+    collection: 'sessions'
+  }),
+  unset: 'destroy'
 }));
-
-app.use(cookieParser(env.session.COOKIE_SESSION_SECRET));
 
 /*** Passport initialize ***/
 app.use(passport.initialize());

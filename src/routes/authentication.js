@@ -38,14 +38,21 @@ router.post('/login', (req, res, next) => {
       res.json({user});
       console.log(req.user)
     })
-
-
   })(req, res, next);
 });
 
+router.get('/logout', (req, res, next) => {
+  req.logout();
+  req.session.destroy();
+  res.end();
+});
+
 router.get('/user', (req, res, next) => {
-  console.log('user api route', req.user);
-  res.json({user: req.user });
+  if (req.user) {
+    res.json({ user: req.user });
+  } else {
+    next(new UnauthorizedError('Pas de user dans la req'));
+  }
 });
 
 export default router;
