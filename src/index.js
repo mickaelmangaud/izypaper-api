@@ -29,6 +29,7 @@ const server = new ApolloServer({
   }),
 });
 
+/* Middlewares */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
@@ -40,20 +41,19 @@ app.use(expressSession({
   secret: env.session.COOKIE_SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 24,
-  },
+  unset: 'destroy',
   store: new MongoStore({
     mongooseConnection: db,
     collection: 'sessions'
   }),
-  unset: 'destroy'
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24,
+  },
 }));
 
 /*** Passport initialize ***/
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 /* Register Express Auth Routes */
 registerRoutes(app);
