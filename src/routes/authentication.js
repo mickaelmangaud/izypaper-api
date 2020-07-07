@@ -36,7 +36,6 @@ router.post('/login', (req, res, next) => {
     req.logIn(user, err => {
       if (err) next(err);
       res.json({user});
-      console.log(req.user)
     })
   })(req, res, next);
 });
