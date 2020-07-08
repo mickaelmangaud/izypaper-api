@@ -30,12 +30,12 @@ router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) return next(err);
     if (!user) {
-      next(new UnauthorizedError('Email ou mot de pass incorrect'));
+      return next(new UnauthorizedError('Email ou mot de pass incorrect'));
     }
 
     req.logIn(user, err => {
       if (err) next(err);
-      res.json({user});
+      return res.json({user});
     })
   })(req, res, next);
 });
@@ -48,9 +48,9 @@ router.get('/logout', (req, res, next) => {
 
 router.get('/user', (req, res, next) => {
   if (req.user) {
-    res.json({ user: req.user });
+    return res.json({ user: req.user });
   } else {
-    next(new UnauthorizedError('Pas de user dans la req'));
+    return next(new UnauthorizedError('Pas de user dans la req'));
   }
 });
 
