@@ -50,6 +50,8 @@ app.use(expressSession({
   cookie: {
     maxAge: 1000 * 60 * 60 * 24,
     sameSite: 'none',
+    secure: true,
+    httpOnly: true,
   },
 }));
 
@@ -59,7 +61,6 @@ app.use(passport.session());
 
 /* Logging middleware */
 app.use((req, res, next) => {
-  console.log('[REQUEST LOGGIN] :', req);
   next();
 });
 
