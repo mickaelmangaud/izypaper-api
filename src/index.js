@@ -77,4 +77,6 @@ app.use(notFoundHandler);
 /* Custom error handler */
 app.use(errorHandler);
 
+console.log('test')
+
 app.listen({ port: env.PORT }, () => console.log('ok'));
