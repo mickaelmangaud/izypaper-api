@@ -56,11 +56,11 @@ app.use(expressSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-/* Logging middleware */
-app.use((req, res, next) => {
+// /* Logging middleware */
+// app.use((req, res, next) => {
 
-  next();
-});
+//   next();
+// });
 
 /* Register Express Auth Routes */
 registerRoutes(app);
@@ -78,6 +78,6 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 app.listen({ port: env.PORT }, () => {
-  console.log('test');
+  // console.log('test');
   logger.info(`Server ready at ${env.BASE_API_URL}${server.graphqlPath}`);
 });
