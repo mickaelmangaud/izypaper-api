@@ -13,6 +13,7 @@ import cors from 'cors';
 import './config/passport';
 import './db';
 import { db } from './db';
+import { logger } from './utils';
 
 const corsOptions = {
   origin: env.CLIENT_URL,
@@ -55,6 +56,12 @@ app.use(expressSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
+/* Logging middleware */
+app.use((req, res, next) => {
+  console.log('request', req);
+  next();
+});
+
 /* Register Express Auth Routes */
 registerRoutes(app);
 
@@ -70,6 +77,6 @@ app.use(notFoundHandler);
 /* Custom error handler */
 app.use(errorHandler);
 
-app.listen({ port: env.PORT }, () =>
-  console.log(`Server ready at ${env.BASE_API_URL}${server.graphqlPath}`)
-);
+app.listen({ port: env.PORT }, () => {
+  logger.info(`Server ready at ${env.BASE_API_URL}${server.graphqlPath}`);
+});
