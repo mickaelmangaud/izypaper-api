@@ -58,7 +58,7 @@ app.use(passport.session());
 
 /* Logging middleware */
 app.use((req, res, next) => {
-  console.log('request', req);
+
   next();
 });
 
