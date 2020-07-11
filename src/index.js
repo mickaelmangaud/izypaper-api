@@ -56,11 +56,11 @@ app.use(expressSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// /* Logging middleware */
-// app.use((req, res, next) => {
-
-//   next();
-// });
+/* Logging middleware */
+app.use((req, res, next) => {
+  console.log('[REQUEST LOGGIN] :', req);
+  next();
+});
 
 /* Register Express Auth Routes */
 registerRoutes(app);
