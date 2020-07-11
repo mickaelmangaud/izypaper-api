@@ -53,6 +53,7 @@ app.use(expressSession({
     secure: true,
     httpOnly: true,
   },
+  proxy: true
 }));
 
 /*** Passport initialize ***/
