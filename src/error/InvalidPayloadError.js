@@ -7,7 +7,8 @@ export default class InvalidPayloadError extends BaseError {
     MISSING_PARAMETER: 'MISSING_PARAMETER',
   }
 
-  constructor(message, code = InvalidPayloadError.CODE.BAD_ARGUMENT) {
+  constructor(message, detailedMessages = [], code = InvalidPayloadError.CODE.BAD_ARGUMENT) {
     super(message, code, BAD_REQUEST);
+    this.detailedMessages = detailedMessages;
   }
 }

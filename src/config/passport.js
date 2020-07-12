@@ -1,9 +1,6 @@
-// import { Strategy as GoogleStrategy} from 'passport-google-oauth20';
-// import { Strategy as FacebookStrategy } from 'passport-facebook';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { UserDAO } from '../dao';
 import passport from 'passport';
-import env from './env';
 import bcrypt from 'bcryptjs';
 import { UnauthorizedError } from '../error';
 
@@ -32,7 +29,8 @@ passport.use(new LocalStrategy(
 
         const user = {
             id: foundUser._id,
-            email: foundUser.email
+            email: foundUser.email,
+            role: foundUser.role
         };
 
         done(null, user);

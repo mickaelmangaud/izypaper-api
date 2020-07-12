@@ -1,0 +1,17 @@
+{
+  "title" : "First Questionnaire",
+  "description": "Description of the first questionnaire",
+  "type": "object",
+  "properties": {
+    "email": {
+      "description": "The login email",
+      "type": "string"
+    },
+    "password": {
+      "description": "The passwod login",
+      "type": "string"
+    }
+  },
+  "required": ["email", "password"],
+  "additionalProperties": false
+}

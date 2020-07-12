@@ -14,6 +14,9 @@ import './config/passport';
 import './db';
 import { db } from './db';
 import { logger } from './utils';
+import AuthDirective from './graphql/AuthDirective';
+
+import './validation';
 
 const corsOptions = {
   origin: env.CLIENT_URL,
@@ -21,14 +24,6 @@ const corsOptions = {
 };
 
 const app = express();
-
-const server = new ApolloServer({ 
-  typeDefs, 
-  resolvers,
-  context: ({req}) => ({
-    user: req.user,
-  }),
-});
 
 /* Middlewares */
 app.use(bodyParser.json());
@@ -67,6 +62,17 @@ app.use((req, res, next) => {
 
 /* Register Express Auth Routes */
 registerRoutes(app);
+
+const server = new ApolloServer({ 
+  typeDefs, 
+  resolvers,
+  schemaDirectives: {
+    auth: AuthDirective
+  },
+  context: ({req}) => ({
+    user: req.user,
+  }),
+});
 
 server.applyMiddleware({ 
   app,
