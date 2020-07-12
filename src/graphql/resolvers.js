@@ -6,7 +6,7 @@ import { logger } from '../utils';
 const Query = {
   currentUser: async (parent, args, context, info) => {
     if (!context.user) {
-      logger.error(`[QUERY: currentUser]: User object not present in request, please login`);
+      // logger.error(`[QUERY: currentUser]: User object not present in request, please login`);
       throw new AuthenticationError(`User not identified`);
     }
     return await UserDAO.findById(context.user.id);
@@ -25,7 +25,7 @@ const Query = {
 const Mutation = {
   createUser: async (_, {input}) => {
     const foundUser = await UserDAO.findUserByEmail(input.email);
-    logger.info(`[MUTATION: createUser]:Creating user with email: ${input.email}`);
+    // logger.info(`[MUTATION: createUser]:Creating user with email: ${input.email}`);
     if (foundUser) {
       throw new ApolloError(`User with email: ${input.email} alreayd exists`, 'CONFLICT');
     }

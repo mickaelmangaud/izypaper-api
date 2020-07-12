@@ -87,5 +87,5 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 app.listen({ port: env.PORT }, () => {
-  logger.info(`Server ready at ${env.BASE_API_URL}${server.graphqlPath}`);
+  // logger.info(`Server ready at ${env.BASE_API_URL}${server.graphqlPath}`);
 });
