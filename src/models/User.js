@@ -12,7 +12,6 @@ const UserSchema = new mongoose.Schema({
   roles: {
     type: [String],
     enum: ['ADMIN', 'USER', 'GUEST'],
-    
   },
   locale: String,
   firstName: String,
