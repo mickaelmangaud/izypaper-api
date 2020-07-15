@@ -30,7 +30,7 @@ passport.use(new LocalStrategy(
         const user = {
             id: foundUser._id,
             email: foundUser.email,
-            role: foundUser.role
+            roles: foundUser.roles
         };
 
         done(null, user);
