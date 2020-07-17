@@ -10,7 +10,10 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
     const foundUser = await UserDAO.findById(id);
-    done(null, foundUser);
+    done(null, {
+        id: foundUser.id, 
+        email: foundUser.email
+    });
 });
 
 /*** LOCAL STRATEGY ***/
@@ -30,7 +33,6 @@ passport.use(new LocalStrategy(
         const user = {
             id: foundUser._id,
             email: foundUser.email,
-            roles: foundUser.roles
         };
 
         done(null, user);

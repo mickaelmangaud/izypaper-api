@@ -50,9 +50,11 @@ router.post('/login', (req, res, next) => {
 });
 
 router.get('/logout', (req, res, next) => {
-  req.logout();
-  req.session.destroy();
-  res.end();
+  req.session.destroy(err => {
+    req.logout();
+    res.clearCookie('connect.sid')
+    return res.end();
+  });
 });
 
 router.get('/user', (req, res, next) => {
