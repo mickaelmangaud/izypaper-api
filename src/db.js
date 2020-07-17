@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { env } from './config';
-import { UserDAO } from './dao';
+import { User } from './models';
 
 const users = [
   {
@@ -30,5 +30,9 @@ export const db = mongoose.connection;
 
 db.on('error', error => console.log('MONGO ERROR', error));
 db.on('open', () => {
-  
+  console.log(`[MONGODB] : Connection OK`);
+  users.map(user => {
+    console.log('user', user);
+    User.create(user);
+  });
 });
