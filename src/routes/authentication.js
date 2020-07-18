@@ -77,6 +77,7 @@ router.post('/validate/:token', async (req, res, next) => {
 });
 
 router.post('/login', (req, res, next) => {
+  logger.info(`[/auth/login]: User login with payload : ${JSON.stringify(req.body)}`);
   passport.authenticate('local', (err, user, info) => {
     if (err) return next(err);
     if (!user) {
