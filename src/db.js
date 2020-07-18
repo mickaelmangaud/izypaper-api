@@ -19,7 +19,7 @@ const users = [
   {
     email: 'malo@izypaper.com',
     password: '$2a$10$jnhs4.1DKl5gS5jaW0wKhusl0XRCqaAXBMDzAiEDqBYEphlH8lJNe',
-    roles: ['ADMIN'],
+    roles: ['USER'],
     active: true
   }
 ]
@@ -28,6 +28,12 @@ mongoose.connect(
   env.MONGODB_URL, 
   {  useNewUrlParser: true, useUnifiedTopology: true }
 );
+
+/* Used to avoid warning : 
+  "DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead."
+*/
+mongoose.set('useCreateIndex', true);
+
 export const db = mongoose.connection;
 
 db.on('error', error => {

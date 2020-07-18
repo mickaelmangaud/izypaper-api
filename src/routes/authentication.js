@@ -8,8 +8,8 @@ import { ajv } from '../validation';
 import bcrypt from 'bcryptjs';
 import userRegistrationSchema from '../validation/register.schema.json';
 import userLoginSchema from '../validation/login.schema.json';
-import cryptoRandomString from 'crypto-random-string';
 import { ConflictError, UnauthorizedError, InvalidPayloadError } from '../error';
+import cryptoRandomString from 'crypto-random-string';
 
 const validateUserRegistration = ajv.compile(userRegistrationSchema);
 const validateUserLogin = ajv.compile(userLoginSchema);
@@ -48,8 +48,8 @@ router.post('/register', async (req, res, next) => {
 		html: `
 			<p>Bienvenue chez Izypaper!</p>
 			<p>Client sur 
-			<a href="${process.env.BASE_API_URL}/auth/validate/${validateString}">ce lien</a>
-			pour valider votre inscription
+				<a href="${process.env.BASE_API_URL}/auth/validate/${validateString}">ce lien</a>
+				pour valider votre inscription
 			</p>
 		`
 	});

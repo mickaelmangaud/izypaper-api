@@ -1,22 +1,19 @@
 import 'dotenv/config';
+import './db';
+import './config/passport';
 import { env } from './config';
-import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
-import { registerRoutes } from './routes';
-import passport from 'passport';
+import cors from 'cors';
 import bodyParser from 'body-parser';
 import expressSession from 'express-session';
-import { typeDefs, resolvers } from './graphql';
-import { notFoundHandler, errorHandler } from './middleware';
 import connectMongo from 'connect-mongo';
-import cors from 'cors';
-import './config/passport';
-import './db';
+import passport from 'passport';
+import { ApolloServer } from 'apollo-server-express';
+import { registerRoutes } from './routes';
+import { typeDefs, resolvers, AuthDirective } from './graphql';
+import { notFoundHandler, errorHandler } from './middleware';
 import { db } from './db';
 import { logger } from './utils';
-import AuthDirective from './graphql/AuthDirective';
-
-import './validation';
 
 const corsOptions = {
   origin: env.CLIENT_URL,
@@ -30,9 +27,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 
+/*** Use cookie sessions ***/
 const MongoStore = connectMongo(expressSession);
 
-/*** Use cookie sessions ***/
 app.use(expressSession({
   secret: env.session.COOKIE_SESSION_SECRET,
   resave: false,
@@ -63,7 +60,7 @@ app.use((req, res, next) => {
 /* Register Express Auth Routes */
 registerRoutes(app);
 
-const server = new ApolloServer({ 
+const apolloServer = new ApolloServer({ 
   typeDefs, 
   resolvers,
   schemaDirectives: {
@@ -74,7 +71,7 @@ const server = new ApolloServer({
   }),
 });
 
-server.applyMiddleware({ 
+apolloServer.applyMiddleware({ 
   app,
   path: '/graphql',
   cors: corsOptions
@@ -87,5 +84,5 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 app.listen({ port: env.PORT }, () => {
-  logger.info(`Server ready at ${env.BASE_API_URL}${server.graphqlPath}`);
+  logger.info(`Server ready at ${env.BASE_API_URL}${apolloServer.graphqlPath}`);
 });

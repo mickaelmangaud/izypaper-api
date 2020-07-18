@@ -6,9 +6,10 @@ class AuthDirective extends SchemaDirectiveVisitor {
     /* Extract directive argument */
     const requiredRole = this.args.requires;
     const originalResolve = field.resolve || defaultFieldResolver;
+
     field.resolve = function(...args) {
       const context = args[2];
-
+      
       const isAuthorized = context.user && context.user.roles.find(role => role === requiredRole);
       if (!isAuthorized) {
         throw new AuthenticationError(`You need following role: ${requiredRole}`);

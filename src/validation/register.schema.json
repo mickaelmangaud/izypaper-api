@@ -15,9 +15,10 @@
     },
     "roles": {
       "description": "list user roles",
-      "type": "array"
+      "type": "array",
+      "uniqueItems": true
     }
   },
-  "required": ["email", "password"],
+  "required": ["email", "password", "roles"],
   "additionalProperties": false
 }
