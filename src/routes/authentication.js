@@ -35,9 +35,9 @@ router.post('/register', async (req, res, next) => {
 	const validateString = cryptoRandomString({ length: 128 });
 
 	await UserDAO.create({
-		email: req.body.email, 
-		password: hash,
-		validateString
+		...req.body,
+		validateString,
+		password: hash
 	});
 
 	transporter.sendMail({
@@ -67,7 +67,7 @@ router.post('/validate/:token', async (req, res, next) => {
 	const token = req.params.token;
   
 	const foundUser = await UserDAO.findUserByValidationString(token);
-	logger.info(`[/auth/register/:token]: Account validation found user : ${JSON.stringify(req.params.token)}`);
+	logger.info(`[/auth/register/:token]: Account validation found user : ${JSON.stringify(foundUser)}`);
 	if (!foundUser) {
 		return next(new InvalidPayloadError('Bad token provided'));
 	}
@@ -75,7 +75,7 @@ router.post('/validate/:token', async (req, res, next) => {
 	await UserDAO.setActive(foundUser._id);
 	await UserDAO.removeValidateString(foundUser._id);
 
-	res.json({ 
+	res.status(200).json({ 
 		message: `Account: ${req.body.email} successfully validated`,
 	});
 });
@@ -96,7 +96,7 @@ router.post('/login', (req, res, next) => {
 
 		req.logIn(user, err => {
 			if (err) next(err);
-			return res.json({user});
+			return res.status(200).json({user});
 		})
 	})(req, res, next);
 });
