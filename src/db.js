@@ -42,7 +42,7 @@ db.on('error', error => {
 
 db.on('open', () => {
   logger.info(`[MONGODB]: Connection OK`);
-  users.map(user => {
-    User.create(user);
-  });
+  // users.map(user => {
+  //   User.create(user);
+  // });
 });
