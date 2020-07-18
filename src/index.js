@@ -17,7 +17,7 @@ import { logger } from './utils';
 
 const corsOptions = {
   origin: env.CLIENT_URL,
-  credentials: true
+  credentials: true,
 };
 
 const app = express();
@@ -37,7 +37,7 @@ app.use(expressSession({
   unset: 'destroy',
   store: new MongoStore({
     mongooseConnection: db,
-    collection: 'sessions'
+    collection: 'sessions',
   }),
   cookie: {
     maxAge: 1000 * 60 * 60 * 24,
@@ -45,7 +45,7 @@ app.use(expressSession({
     secure: process.env.NODE_ENV === 'development' ? false : true,
     httpOnly: true,
   },
-  proxy: true
+  proxy: true,
 }));
 
 /*** Passport initialize ***/
@@ -64,7 +64,7 @@ const apolloServer = new ApolloServer({
   typeDefs, 
   resolvers,
   schemaDirectives: {
-    auth: AuthDirective
+    auth: AuthDirective,
   },
   context: ({req}) => ({
     user: req.user,
@@ -74,7 +74,7 @@ const apolloServer = new ApolloServer({
 apolloServer.applyMiddleware({ 
   app,
   path: '/graphql',
-  cors: corsOptions
+  cors: corsOptions,
 });
 
 /*** 404 - Not found ***/
