@@ -25,7 +25,11 @@ passport.use(new LocalStrategy(
             return done(null, false);
         };
 
-        const isMatch = await bcrypt.compare(password, foundUser.password);
+        try {
+            const isMatch = await bcrypt.compare(password, foundUser.password);
+        } catch (error) {
+            console.log('ERROR', error)
+        }
         if (!isMatch) {
             return done(new UnauthorizedError('Email ou mot de passe incorrect'), false);
         };
