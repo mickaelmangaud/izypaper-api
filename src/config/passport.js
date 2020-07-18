@@ -11,7 +11,7 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
     const foundUser = await UserDAO.findById(id);
     done(null, {
-        id: foundUser.id, 
+        id: foundUser._id, 
         email: foundUser.email
     });
 });
