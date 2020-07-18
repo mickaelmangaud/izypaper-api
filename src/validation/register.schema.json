@@ -5,7 +5,8 @@
   "properties": {
     "email": {
       "description": "The login email",
-      "type": "string"
+      "type": "string",
+      "format": "email"
     },
     "password": {
       "description": "The passwod login",

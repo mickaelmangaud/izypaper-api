@@ -6,20 +6,22 @@ import { CREATED } from 'http-status-codes';
 import { logger } from '../utils';
 import { ajv } from '../validation';
 import bcrypt from 'bcryptjs';
-import loginSchema from '../validation/register.schema.json';
+import userRegistrationSchema from '../validation/register.schema.json';
+import userLoginSchema from '../validation/login.schema.json';
 import cryptoRandomString from 'crypto-random-string';
 import { ConflictError, UnauthorizedError, InvalidPayloadError } from '../error';
 
-const validate = ajv.compile(loginSchema);
+const validateUserRegistration = ajv.compile(userRegistrationSchema);
+const validateUserLogin = ajv.compile(userLoginSchema);
 
 const router = Router({});
 
 router.post('/register', async (req, res, next) => {
 	logger.info(`[/auth/register]: user register with payload: ${JSON.stringify(req.body)}`);
 
-	const valid = validate(req.body);
+	const valid = validateUserRegistration(req.body);
 	if (!valid) {
-		return next(new InvalidPayloadError('Invalid Payload error', validate.errors));
+		return next(new InvalidPayloadError('Invalid Payload error', validateUserRegistration.errors));
 	}
 
 	const user = await UserDAO.findUserByEmail(req.body.email);
@@ -65,7 +67,7 @@ router.post('/validate/:token', async (req, res, next) => {
 	const token = req.params.token;
   
 	const foundUser = await UserDAO.findUserByValidationString(token);
-	logger.info(`[/auth/register/:token]: Account validation found user : ${foundUser}`);
+	logger.info(`[/auth/register/:token]: Account validation found user : ${JSON.stringify(req.params.token)}`);
 	if (!foundUser) {
 		return next(new InvalidPayloadError('Bad token provided'));
 	}
@@ -80,6 +82,11 @@ router.post('/validate/:token', async (req, res, next) => {
 
 router.post('/login', (req, res, next) => {
 	logger.info(`[/auth/login]: User login with payload : ${JSON.stringify(req.body)}`);
+
+	const valid = validateUserLogin(req.body);
+	if (!valid) {
+		return next(new InvalidPayloadError('Invalid Payload error', validateUserLogin.errors));
+	}
 
 	passport.authenticate('local', (err, user, info) => {
 		if (err) return next(err);
