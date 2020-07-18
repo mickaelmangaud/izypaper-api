@@ -6,3 +6,4 @@ Pour installer les devDependencies sur heroku:
 TODO: 
 - Verifier pourquoi au register l'api ne prend pas les roles.
 - schemas de validation : checker pour les enums
+- explorer log4js

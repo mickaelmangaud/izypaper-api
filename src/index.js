@@ -54,7 +54,7 @@ app.use(passport.session());
 
 /* Logging middleware */
 app.use((req, res, next) => {
-  logger.warn(`[REQUEST]: ${req.method} | ${req.path} | ${JSON.stringify(req.body)}`);
+  logger.debug(`[REQUEST]: ${req.method} | ${req.path} | ${JSON.stringify(req.body)}`);
   next();
 });
 
