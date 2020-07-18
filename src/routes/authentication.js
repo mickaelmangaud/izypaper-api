@@ -16,7 +16,7 @@ const router = Router({});
 
 router.post('/register', async (req, res, next) => {
 	logger.info(`[/auth/register]: user register with payload: ${JSON.stringify(req.body)}`);
-	
+
 	const valid = validate(req.body);
 	if (!valid) {
 		return next(new InvalidPayloadError('Invalid Payload error', validate.errors));
@@ -61,16 +61,17 @@ router.post('/register', async (req, res, next) => {
 });
 
 router.post('/validate/:token', async (req, res, next) => {
-	logger.info(`[/auth/register/:token]: User ${req.body.email} asked for account validation with token : ${req.params.token}`);
+	logger.info(`[/auth/register/:token]: Account validation requested with token : ${req.params.token}`);
 	const token = req.params.token;
   
 	const foundUser = await UserDAO.findUserByValidationString(token);
+	logger.info(`[/auth/register/:token]: Account validation found user : ${foundUser}`);
 	if (!foundUser) {
 		return next(new InvalidPayloadError('Bad token provided'));
 	}
 
-	UserDAO.setActive(foundUser._id);
-	UserDAO.removeValidateString(foundUser._id);
+	await UserDAO.setActive(foundUser._id);
+	await UserDAO.removeValidateString(foundUser._id);
 
 	res.json({ 
 		message: `Account: ${req.body.email} successfully validated`,
