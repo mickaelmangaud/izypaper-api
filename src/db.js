@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { env } from './config';
 import { User } from './models';
+import { logger } from './utils';
 
 const users = [
   {
@@ -29,11 +30,12 @@ mongoose.connect(
 );
 export const db = mongoose.connection;
 
+db.on('error', error => {
+  logger.error('[MONGOOSE CONNECTION]: Error :', error);
+});
 
-
-db.on('error', error => console.log('MONGO ERROR', error));
 db.on('open', () => {
-  console.log(`[MONGODB] : Connection OK`);
+  logger.info(`[MONGODB]: Connection OK`);
   users.map(user => {
     User.create(user);
   });
