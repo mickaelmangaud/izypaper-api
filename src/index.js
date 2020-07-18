@@ -42,7 +42,7 @@ app.use(expressSession({
   cookie: {
     maxAge: 1000 * 60 * 60 * 24,
     sameSite: 'none',
-    secure: process.env.NODE_ENV === 'development' ? false : true,
+    secure: env.NODE_ENV === 'development' ? false : true,
     httpOnly: true,
   },
   proxy: true,
@@ -54,6 +54,7 @@ app.use(passport.session());
 
 /* Logging middleware */
 app.use((req, res, next) => {
+  logger.warn(`[REQUEST]: ${req.method} | ${req.path} | ${JSON.stringify(req.body)}`);
   next();
 });
 
