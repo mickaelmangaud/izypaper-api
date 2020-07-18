@@ -6,6 +6,7 @@ import { UnauthorizedError } from '../error';
 import { logger } from '../utils';
 
 passport.serializeUser((user, done) => {
+    logger.info(`[PASSPORT]: Serialized user : ${JSON.stringify(user)}`);
     done(null, user.id);
 });
 
@@ -22,10 +23,10 @@ passport.deserializeUser(async (id, done) => {
 passport.use(new LocalStrategy(
     { usernameField: 'email' },
     async (username, password, done) => {
-        logger.info(`[PASSPORT LocalStrategy]: payload : ${JSON.stringify({username, password})}`);
+        logger.info(`[PASSPORT LocalStrategy]: Payload : ${JSON.stringify({username, password})}`);
 
         const foundUser = await UserDAO.findUserByEmail(username);
-        logger.info(`[PASSPORT LocalStrategy]: foundUser : ${JSON.stringify(foundUser)}`);
+        logger.info(`[PASSPORT LocalStrategy]: Found user : ${JSON.stringify(foundUser)}`);
         if (!foundUser) {
             return done(null, false);
         };
