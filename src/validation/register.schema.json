@@ -10,7 +10,8 @@
     },
     "password": {
       "description": "The passwod login",
-      "type": "string"
+      "type": "string",
+      "minLength": 6
     },
     "roles": {
       "description": "list user roles",
