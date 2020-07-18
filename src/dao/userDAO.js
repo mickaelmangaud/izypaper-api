@@ -21,8 +21,16 @@ class UserDao {
     .select('-__v');
   }
 
+  async setActive(id) {
+    return await this.update(id, { active: true });
+  }
+
   async setInactive(id) {
     return await this.update(id, { active: false });
+  }
+
+  async removeValidateString(id) {
+    return await User.updateOne({}, { $unset: { validateString: true }});
   }
 
   async delete(id) {
@@ -47,13 +55,18 @@ class UserDao {
 
   async findUserByEmail(email) {
     return await User.findOne({ email })
-      .select('_id email password roles')
+      .select('-password')
   }
 
   async findAll(query) {
     return await User.find({})
       // .limit(Number(query.limit) || 10)
       .select('-password -__v');
+  }
+
+  async findUserByValidationString (validateString) {
+    return await User.findOne({ validateString })
+      .select('-password')
   }
 }
 

@@ -1,6 +1,6 @@
 {
-  "title" : "First Questionnaire",
-  "description": "Description of the first questionnaire",
+  "title" : "Register Schema",
+  "description": "Lists all the properties needed to register a new user",
   "type": "object",
   "properties": {
     "email": {
@@ -10,6 +10,10 @@
     "password": {
       "description": "The passwod login",
       "type": "string"
+    },
+    "roles": {
+      "description": "list user roles",
+      "type": "array"
     }
   },
   "required": ["email", "password"],
