@@ -8,14 +8,13 @@ import bodyParser from 'body-parser';
 import expressSession from 'express-session';
 import connectMongo from 'connect-mongo';
 import passport from 'passport';
-import { ApolloServer } from 'apollo-server-express';
 import { registerRoutes } from './routes';
-import { typeDefs, resolvers, AuthDirective } from './graphql';
 import { notFoundHandler, errorHandler } from './middleware';
 import { db } from './db';
 import { logger } from './utils';
+import { applyExpressMiddlewareToApollo } from './apollo';
 
-const corsOptions = {
+export const corsOptions = {
   origin: env.CLIENT_URL,
   credentials: true,
 };
@@ -61,22 +60,8 @@ app.use((req, res, next) => {
 /* Register Express Auth Routes */
 registerRoutes(app);
 
-const apolloServer = new ApolloServer({ 
-  typeDefs, 
-  resolvers,
-  schemaDirectives: {
-    auth: AuthDirective,
-  },
-  context: ({req}) => ({
-    user: req.user,
-  }),
-});
-
-apolloServer.applyMiddleware({ 
-  app,
-  path: '/graphql',
-  cors: corsOptions,
-});
+/* Pass express app to ApolloServer */
+applyExpressMiddlewareToApollo(app);
 
 /*** 404 - Not found ***/
 app.use(notFoundHandler);
@@ -85,5 +70,5 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 app.listen({ port: env.PORT }, () => {
-  logger.info(`Server ready at ${env.BASE_API_URL}${apolloServer.graphqlPath}`);
+  logger.info(`Server ready at ${env.BASE_API_URL}/graphql`);
 });
