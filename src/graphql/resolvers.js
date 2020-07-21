@@ -13,26 +13,28 @@ const Query = {
   },
 
   user: async (_, {id}, ctx) => {
-    return await UserDAO.findById(id)
+    return await UserDAO.findById(id);
   },
 
   users: async (_, {}, ctx) => {
-    console.log('users')
     return await UserDAO.findAll();
   },
 }
 
 const Mutation = {
   createUser: async (_, {input}) => {
+    // TODO: valider le payload
     const foundUser = await UserDAO.findUserByEmail(input.email);
     logger.info(`[MUTATION: createUser]:Creating user with email: ${input.email}`);
     if (foundUser) {
       throw new ApolloError(`User with email: ${input.email} alreayd exists`, 'CONFLICT');
     }
+    
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(input.password, salt);
     await UserDAO.create({ ...input, password: hash });
-    return await UserDAO.findUserByEmail(input.email);
+
+    return  await UserDAO.findUserByEmail(input.email);
   },
 
   deleteUser: async (_, {id}) => await UserDAO.delete(id),

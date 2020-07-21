@@ -22,11 +22,17 @@ const UserSchema = new mongoose.Schema({
   roles: {
     type: [String],
     enum: ['ADMIN', 'USER', 'GUEST'],
-    required: true
+    required: true,
   },
   locale: String,
-  firstName: String,
-  lastName: String,
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    requiredPaths: true,
+  },
   googleID: String,
   facebookID: String,
   avatarURL: String,

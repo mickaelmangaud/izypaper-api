@@ -62,7 +62,7 @@ router.post('/register', async (req, res, next) => {
 	})
 });
 
-router.post('/validate/:token', async (req, res, next) => {
+router.get('/validate/:token', async (req, res, next) => {
 	logger.info(`[/auth/register/:token]: Account validation requested with token : ${req.params.token}`);
 	const token = req.params.token;
   

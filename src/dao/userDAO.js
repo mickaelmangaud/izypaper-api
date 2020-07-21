@@ -40,28 +40,28 @@ class UserDao {
   
   async findById(id) {
     return await User.findById(id)
-      .select('-password -__v');
+      .select('-password');
   }
 
   async findByGoogleId(id) {
     return await User.findOne({ googleID: id })
-      .select('-password -__v');
+      .select('-password');
   }
 
   async findByFacebookId(id) {
     return await User.findOne({ facebookID: id })
-      .select('-password -__v');
+      .select('-password');
   }
 
   async findUserByEmail(email) {
     return await User.findOne({ email })
-      .select('password')
+      .select('-password')
   }
 
   async findAll(query) {
     return await User.find({})
       // .limit(Number(query.limit) || 10)
-      .select('-password -__v');
+      .select('-password');
   }
 
   async findUserByValidationString (validateString) {
