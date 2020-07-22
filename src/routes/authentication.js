@@ -1,18 +1,15 @@
 import passport from 'passport';
-import { Router } from 'express';
-import { transporter } from '../config';
-import { UserDAO } from '../dao';
 import { CREATED } from 'http-status-codes';
-import { logger } from '../utils';
-import { ajv } from '../validation';
-import bcrypt from 'bcryptjs';
-import userRegistrationSchema from '../validation/register.schema.json';
-import userLoginSchema from '../validation/login.schema.json';
+import { Router } from 'express';
+import { UserDAO } from '../dao';
+import { logger, transporter } from '../utils';
+import { ajv, loginSchema, registerSchema } from '../validation';
 import { ConflictError, UnauthorizedError, InvalidPayloadError } from '../error';
 import cryptoRandomString from 'crypto-random-string';
+import bcrypt from 'bcryptjs';
 
-const validateUserRegistration = ajv.compile(userRegistrationSchema);
-const validateUserLogin = ajv.compile(userLoginSchema);
+const validateUserRegistration = ajv.compile(registerSchema);
+const validateUserLogin = ajv.compile(loginSchema);
 
 const router = Router({});
 
@@ -67,7 +64,7 @@ router.get('/validate/:token', async (req, res, next) => {
 	const token = req.params.token;
   
 	const foundUser = await UserDAO.findUserByValidationString(token);
-	logger.info(`[/auth/register/:token]: Account validation found user : ${JSON.stringify(foundUser)}`);
+	logger.info(`[/auth/register/:token] Account validation found user : ${JSON.stringify(foundUser)}`);
 	if (!foundUser) {
 		return next(new InvalidPayloadError('Bad token provided'));
 	}
@@ -81,7 +78,7 @@ router.get('/validate/:token', async (req, res, next) => {
 });
 
 router.post('/login', (req, res, next) => {
-	logger.info(`[/auth/login]: User login with payload : ${JSON.stringify(req.body)}`);
+	logger.info(`[/auth/login] User login with payload : ${JSON.stringify(req.body)}`);
 
 	const valid = validateUserLogin(req.body);
 	if (!valid) {
@@ -92,9 +89,10 @@ router.post('/login', (req, res, next) => {
 		if (err) return next(err);
 		if (!user) {
 			return next(new UnauthorizedError('Invalid credentials'));
-		}
-
+		}	
+		
 		req.logIn(user, err => {
+			logger.info(`[/auth/login] Passport authenticate with user : ${JSON.stringify(user)}`);
 			if (err) next(err);
 			return res.status(200).json({user});
 		})
@@ -113,7 +111,6 @@ router.get('/user', (req, res, next) => {
 	if (!req.user) {
 		return next(new UnauthorizedError('User not authentified'));
 	}
-
   	res.json({ user: req.user });
 });
 

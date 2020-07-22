@@ -30,6 +30,11 @@ passport.use(new LocalStrategy(
         if (!foundUser) {
             return done(null, false);
         };
+
+        if(!foundUser.active) {
+            logger.error(`[PASSPORT LocalStrategy]: Non active user`, !foundUser.active);
+            return done(new UnauthorizedError('User not active, please verify email adress'), false);
+        }
         
         const isMatch = await bcrypt.compare(password, foundUser.password);
         logger.info(`[PASSPORT LocalStrategy]: Matching user : ${isMatch}`);
