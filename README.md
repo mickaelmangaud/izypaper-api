@@ -4,6 +4,4 @@ Pour installer les devDependencies sur heroku:
 - heroku config:set NPM_CONFIG_PRODUCTION=false YARN_PRODUCTION=false
 
 TODO: 
-- Verifier pourquoi au register l'api ne prend pas les roles.
-- schemas de validation : checker pour les enums
-- explorer log4js
+- Gérer l'erreur à la connexion en cas d'utilisateur avec email non vérifié
