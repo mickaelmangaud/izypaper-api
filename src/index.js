@@ -28,6 +28,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 app.use(helmet());
 
+app.disable('x-powered-by');
+
 /*** Use cookie sessions ***/
 const MongoStore = connectMongo(expressSession);
 

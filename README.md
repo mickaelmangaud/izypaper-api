@@ -5,3 +5,4 @@ Pour installer les devDependencies sur heroku:
 
 TODO: 
 - Gérer l'erreur à la connexion en cas d'utilisateur avec email non vérifié
+- installer helmet
