@@ -13,6 +13,7 @@ import { notFoundHandler, errorHandler } from './middleware';
 import { db } from './db';
 import { logger } from './utils';
 import { applyExpressMiddlewareToApollo } from './apollo';
+import helmet from 'helmet';
 
 export const corsOptions = {
   origin: env.CLIENT_URL,
@@ -25,6 +26,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
+app.use(helmet());
 
 /*** Use cookie sessions ***/
 const MongoStore = connectMongo(expressSession);
