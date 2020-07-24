@@ -23,12 +23,10 @@ export const corsOptions = {
 const app = express();
 
 /* Middlewares */
+app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
-app.use(helmet());
-
-app.disable('x-powered-by');
 
 /*** Use cookie sessions ***/
 const MongoStore = connectMongo(expressSession);
@@ -55,7 +53,7 @@ app.use(expressSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-/* Logging middleware */
+/* REQUEST Logging middleware */
 app.use((req, res, next) => {
   logger.debug(`[REQUEST]: ${req.method} | ${req.path} | ${JSON.stringify(req.body)}`);
   next();
