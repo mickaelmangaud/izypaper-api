@@ -101,6 +101,10 @@ router.post('/login', (req, res, next) => {
 
 router.get('/logout', (req, res, next) => {
 	req.session.destroy(error => {
+		if (error) {
+			console.log('LOGOUT ERROR', error)
+		}
+
 		req.logout();
 		res.clearCookie('connect.sid');
 		return res.end();

@@ -28,6 +28,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 
+app.use(function(req, res, next) {
+  if (!req.user)
+      res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
+  next();
+});
+
 /*** Use cookie sessions ***/
 const MongoStore = connectMongo(expressSession);
 
