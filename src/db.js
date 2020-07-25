@@ -7,19 +7,26 @@ const users = [
   {
     email: 'mickael@izypaper.com',
     password: '$2a$10$mvI8mj6w5sWtKRQ23IqG3OMkRsvFrtgh2Ut61icuEAMeSCIDjDY/6',
+    firstName: 'Mickael',
+    lastName: 'Mangaud',
     roles: ['ADMIN'],
     active: true
   },
   {
     email: 'cecile@izypaper.com',
     password: '$2a$10$j6h.xwGMICOpaCfcAdilj.OsgHvLAcsQEdig2i87yorGBaFBsbZPe',
+    firstName: 'Cécile',
+    lastName: 'Amiah',
     roles: ['ADMIN'],
+
     active: true
   },
   {
     email: 'malo@izypaper.com',
-    password: '$2a$10$jnhs4.1DKl5gS5jaW0wKhusl0XRCqaAXBMDzAiEDqBYEphlH8lJNe',
-    roles: ['USER'],
+    password: '$2a$10$RNcGh466BbM7KZwr1IcvMegqeDNUM/Acmc5AdvO.ZWQLABv5.L8.G',
+    firstName: 'Malo',
+    lastName: 'Michel',
+    roles: ['ADMIN'],
     active: true
   }
 ]
@@ -40,9 +47,9 @@ db.on('error', error => {
   logger.error('[MONGOOSE CONNECTION]', error);
 });
 
-db.on('open', () => {
+db.on('open', async () => {
   logger.info(`[MONGODB]: Connection OK`);
-  // users.map(user => {
-  //   User.create(user);
-  // });
+  await User.deleteMany({});
+
+  users.map(async user => { await User.create(user) });
 });
