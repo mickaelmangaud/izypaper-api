@@ -36,6 +36,8 @@ const UserSchema = new mongoose.Schema({
   googleID: String,
   facebookID: String,
   avatarURL: String,
+}, {
+  timestamps: true,
 });
 
 export default mongoose.model('User', UserSchema);
