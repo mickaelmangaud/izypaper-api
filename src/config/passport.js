@@ -70,8 +70,10 @@ passport.use(new GoogleStrategy({
         if (!foundUser) {
             const createdUser = await UserDAO.createGoogleUser({
                 firstName: profile._json.given_name,
-                email: 'none',
-                password: 'none'
+                lastName: profile._json.family_name,
+                email: profile._json.email,
+                password: 'none',
+                googleID: profile.id
             });
             return done(null, createdUser);
         };

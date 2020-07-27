@@ -100,17 +100,11 @@ router.post('/login', (req, res, next) => {
 	})(req, res, next);
 });
 
-
-
-
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get('/google/callback', passport.authenticate('google', {
-	successRedirect: 'http://localhost:3000/dashboard'
+	successRedirect: `${process.env.CLIENT_URL}`
 }));
-
-
-
 
 router.get('/logout', (req, res, next) => {
 	req.session.destroy(error => {
