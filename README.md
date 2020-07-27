@@ -5,4 +5,6 @@ Pour installer les devDependencies sur heroku:
 
 TODO: 
 - Gérer l'erreur à la connexion en cas d'utilisateur avec email non vérifié
-- installer helmet
+- gérer les champs de l'utilisateur à enregistrer dans la stratégie passport google
+- creer un model "utilisateur base" pour héritage googleuser
+- voir pourquoi ça marche pas sur le pc de cécile en mode incognito
