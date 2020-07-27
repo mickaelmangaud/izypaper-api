@@ -1,4 +1,4 @@
-import { User } from '../models';
+import { User, GoogleUser } from '../models';
 
 class UserDao {
   constructor() {
@@ -10,6 +10,10 @@ class UserDao {
   
   async create(user) {
     return await User.create(user);
+  }
+
+  async createGoogleUser(user) {
+    return await GoogleUser.create(user);
   }
 
   async update(id, newValues) {

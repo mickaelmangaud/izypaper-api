@@ -77,6 +77,7 @@ router.get('/validate/:token', async (req, res, next) => {
 	});
 });
 
+/*** PASSPORT LOCAL STRATEGY */
 router.post('/login', (req, res, next) => {
 	logger.info(`[/auth/login] User login with payload : ${JSON.stringify(req.body)}`);
 
@@ -92,17 +93,29 @@ router.post('/login', (req, res, next) => {
 		}	
 		
 		req.logIn(user, err => {
-			logger.info(`[/auth/login] Passport authenticate with user : ${JSON.stringify(user)}`);
+			logger.info(`[/auth/login] Passport LocalStragey authenticate with user : ${JSON.stringify(user)}`);
 			if (err) next(err);
 			return res.status(200).json({user});
 		})
 	})(req, res, next);
 });
 
+
+
+
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+router.get('/google/callback', passport.authenticate('google', {
+	successRedirect: 'http://localhost:3000/dashboard'
+}));
+
+
+
+
 router.get('/logout', (req, res, next) => {
 	req.session.destroy(error => {
 		if (error) {
-			console.log('LOGOUT ERROR', error)
+			logger.error('LOGOUT ERROR', error)
 		}
 
 		req.logout();
