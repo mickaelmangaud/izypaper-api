@@ -17,7 +17,8 @@ passport.deserializeUser(async (id, done) => {
         logger.info(`[PASSPORT]: Deserialized user : ${JSON.stringify(foundUser)}`);
         done(null, {
             id: foundUser._id, 
-            email: foundUser.email
+            email: foundUser.email,
+            roles: foundUser.roles
         });
     } catch (err) {
         logger.error(`[PASSPORT DESERIALIZE]: Failed to deserialize user :`, err);
@@ -51,6 +52,7 @@ passport.use(new LocalStrategy(
         const user = {
             id: foundUser._id,
             email: foundUser.email,
+            // roles: foundUser.roles
         };
 
         done(null, user);
