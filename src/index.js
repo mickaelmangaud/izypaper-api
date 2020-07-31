@@ -1,7 +1,6 @@
 import 'dotenv/config';
-import './db';
 import './config/passport';
-import { env, sessionConfig } from './config';
+import { env, sessionConfig, corsOptions } from './config';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -14,11 +13,6 @@ import { db } from './db';
 import { logger } from './utils';
 import { applyExpressMiddlewareToApollo } from './apollo';
 import helmet from 'helmet';
-
-export const corsOptions = {
-  origin: env.CLIENT_URL,
-  credentials: true,
-};
 
 const app = express();
 

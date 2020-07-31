@@ -1,4 +1,4 @@
-import env from './env';
+import { env } from './env';
 
 export const sessionConfig = {
     secret: env.session.COOKIE_SESSION_SECRET,

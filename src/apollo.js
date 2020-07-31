@@ -1,6 +1,6 @@
 import { ApolloServer } from 'apollo-server-express';
 import { typeDefs, resolvers, AuthDirective } from './graphql';
-import { corsOptions } from './index';
+import { corsOptions } from './config';
 
 const apolloServer = new ApolloServer({ 
   typeDefs, 
