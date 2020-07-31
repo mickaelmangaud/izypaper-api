@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import './db';
 import './config/passport';
-import { env } from './config';
+import { env, sessionConfig } from './config';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -9,7 +9,7 @@ import expressSession from 'express-session';
 import connectMongo from 'connect-mongo';
 import passport from 'passport';
 import { registerRoutes } from './routes';
-import { notFoundHandler, errorHandler } from './middleware';
+import { notFoundHandler, errorHandler, requestLogin } from './middleware';
 import { db } from './db';
 import { logger } from './utils';
 import { applyExpressMiddlewareToApollo } from './apollo';
@@ -38,21 +38,11 @@ app.use(function(req, res, next) {
 const MongoStore = connectMongo(expressSession);
 
 app.use(expressSession({
-  secret: env.session.COOKIE_SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true,
-  unset: 'destroy',
+  ...sessionConfig,
   store: new MongoStore({
     mongooseConnection: db,
     collection: 'sessions',
   }),
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 24,
-    sameSite: env.NODE_ENV === 'development' ? false : 'none',
-    secure: env.NODE_ENV === 'development' ? false : true,
-    httpOnly: true,
-  },
-  proxy: true,
 }));
 
 /*** Passport initialize ***/
@@ -60,11 +50,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 /* REQUEST Logging middleware */
-app.use((req, res, next) => {
-  logger.debug(`[REQUEST]: ${req.method} | ${req.path} | ${JSON.stringify(req.body)}`);
-  console.log('USER', req.user)
-  next();
-});
+app.use(requestLogin);
 
 /* Register Express Auth Routes */
 registerRoutes(app);

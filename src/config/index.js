@@ -1,2 +1,2 @@
 export { default as env } from './env';
-export { transporter } from '../utils/mailer';
+export { sessionConfig } from './session';
