@@ -27,7 +27,7 @@ export default gql`
     password: String!
     roles: [Role!]! 
     locale: String
-    firstName: String!
+    firstName: String
     lastName: String!
     googleID: String
     facebookID: String

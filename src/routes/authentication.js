@@ -15,7 +15,7 @@ const router = Router({});
 
 router.post('/register', async (req, res, next) => {
 	logger.info(`[/auth/register]: user register with payload: ${JSON.stringify(req.body)}`);
-
+	
 	const valid = validateUserRegistration(req.body);
 	if (!valid) {
 		return next(new InvalidPayloadError('Invalid Payload error', validateUserRegistration.errors));

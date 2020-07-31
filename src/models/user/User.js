@@ -15,13 +15,15 @@ const UserSchema = new mongoose.Schema({
     type: String, required: true 
   },
   roles: { 
-    type: [String], enum: ['ADMIN', 'USER', 'GUEST'], required: true 
+    type: [String],
+    enum: ['ADMIN', 'USER', 'GUEST'],
+    required: true 
   },
   firstName: {
-    type: String, required: true,
+    type: String, required: false,
   },
   lastName: {
-    type: String, requiredPaths: true,
+    type: String, required: false,
   },
 }, {
   timestamps: true,

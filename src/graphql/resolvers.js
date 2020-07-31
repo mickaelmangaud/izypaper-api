@@ -23,7 +23,8 @@ const Query = {
 
 const Mutation = {
   createUser: async (_, {input}) => {
-    // TODO: valider le payload
+    // TODO: valider le payload car (entre autres) un password vide passe
+    
     const foundUser = await UserDAO.findUserByEmail(input.email);
     logger.info(`[MUTATION: createUser]:Creating user with email: ${input.email}`);
     if (foundUser) {
