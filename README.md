@@ -9,3 +9,4 @@ TODO:
 - creer un model "utilisateur base" pour héritage googleuser
 - voir pourquoi passport ça marche pas sur le pc de cécile en mode incognito
 - update le resolver pour register comme la route express pour register
+- refactor applyMiddleware

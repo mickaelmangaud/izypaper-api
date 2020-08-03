@@ -1,5 +1,5 @@
 import passport from 'passport';
-import { CREATED } from 'http-status-codes';
+import { CREATED, OK } from 'http-status-codes';
 import { Router } from 'express';
 import { UserDAO } from '../dao';
 import { logger, transporter } from '../utils';
@@ -8,17 +8,17 @@ import { ConflictError, UnauthorizedError, InvalidPayloadError } from '../error'
 import cryptoRandomString from 'crypto-random-string';
 import bcrypt from 'bcryptjs';
 
-const validateUserRegistration = ajv.compile(registerSchema);
-const validateUserLogin = ajv.compile(loginSchema);
+const validateRegister = ajv.compile(registerSchema);
+const validateLogin = ajv.compile(loginSchema);
 
 const router = Router({});
 
 router.post('/register', async (req, res, next) => {
 	logger.info(`[/auth/register]: user register with payload: ${JSON.stringify(req.body)}`);
-	
-	const valid = validateUserRegistration(req.body);
+
+	const valid = validateRegister(req.body);
 	if (!valid) {
-		return next(new InvalidPayloadError('Invalid Payload error', validateUserRegistration.errors));
+		return next(new InvalidPayloadError('Invalid Payload error', validateRegister.errors));
 	}
 
 	const user = await UserDAO.findUserByEmail(req.body.email);
@@ -72,7 +72,7 @@ router.get('/validate/:token', async (req, res, next) => {
 	await UserDAO.setActive(foundUser._id);
 	await UserDAO.removeValidateString(foundUser._id);
 
-	res.status(200).json({ 
+	res.status(OK).json({ 
 		message: `Account: ${req.body.email} successfully validated`,
 	});
 });
@@ -81,9 +81,9 @@ router.get('/validate/:token', async (req, res, next) => {
 router.post('/login', (req, res, next) => {
 	logger.info(`[/auth/login] User login with payload : ${JSON.stringify(req.body)}`);
 
-	const valid = validateUserLogin(req.body);
+	const valid = validateLogin(req.body);
 	if (!valid) {
-		return next(new InvalidPayloadError('Invalid Payload error', validateUserLogin.errors));
+		return next(new InvalidPayloadError('Invalid Payload error', validateLogin.errors));
 	}
 
 	passport.authenticate('local', (err, user, info) => {
@@ -95,7 +95,7 @@ router.post('/login', (req, res, next) => {
 		req.logIn(user, err => {
 			logger.info(`[/auth/login] Passport LocalStragey authenticate with user : ${JSON.stringify(user)}`);
 			if (err) next(err);
-			return res.status(200).json({user});
+			return res.status(OK).json({user});
 		})
 	})(req, res, next);
 });
@@ -122,7 +122,7 @@ router.get('/user', (req, res, next) => {
 	if (!req.user) {
 		return next(new UnauthorizedError('User not authentified'));
 	}
-  	res.json({ user: req.user });
+  	res.status(OK).json({ user: req.user });
 });
 
 export default router;
