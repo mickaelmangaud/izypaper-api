@@ -33,9 +33,13 @@ const Mutation = {
     
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(input.password, salt);
-    await UserDAO.create({ ...input, password: hash });
 
-    return  await UserDAO.findUserByEmail(input.email);
+    await UserDAO.create({ 
+      ...input, 
+      password: hash
+    });
+
+    return await UserDAO.findUserByEmail(input.email);
   },
 
   deleteUser: async (_, {id}) => await UserDAO.delete(id),
