@@ -11,7 +11,7 @@ import bcrypt from 'bcryptjs';
 const validateRegister = ajv.compile(registerSchema);
 const validateLogin = ajv.compile(loginSchema);
 
-const router = Router({});
+const router = Router({ });
 
 router.post('/register', async (req, res, next) => {
 	logger.info(`[/auth/register]: user register with payload: ${JSON.stringify(req.body)}`);
@@ -59,14 +59,14 @@ router.post('/register', async (req, res, next) => {
 	})
 });
 
-router.get('/validate/:token', async (req, res, next) => {
-	logger.info(`[/auth/register/:token]: Account validation requested with token : ${req.params.token}`);
+router.get('/validate/:string', async (req, res, next) => {
+	logger.info(`[/auth/register/:string]: Account validation requested with :string : ${req.params.token}`);
 	const token = req.params.token;
   
 	const foundUser = await UserDAO.findUserByValidationString(token);
-	logger.info(`[/auth/register/:token] Account validation found user : ${JSON.stringify(foundUser)}`);
+	logger.info(`[/auth/register/:string] Account validation found user : ${JSON.stringify(foundUser)}`);
 	if (!foundUser) {
-		return next(new InvalidPayloadError('Bad token provided'));
+		return next(new InvalidPayloadError('Bad token'));
 	}
 
 	await UserDAO.setActive(foundUser._id);
@@ -109,7 +109,7 @@ router.get('/google/callback', passport.authenticate('google', {
 router.get('/logout', (req, res, next) => {
 	req.session.destroy(error => {
 		if (error) {
-			logger.error('LOGOUT ERROR', error)
+			logger.error('[/auth/logout] Passport Logout Error', error);
 		}
 
 		req.logout();
@@ -119,7 +119,9 @@ router.get('/logout', (req, res, next) => {
 });
 
 router.get('/user', (req, res, next) => {
+	logger.info(`[/auth/user] User in Request: ${req.user}`);
 	if (!req.user) {
+		logger.error('[/auth/user] Error: No user in req');
 		return next(new UnauthorizedError('User not authentified'));
 	}
   	res.status(OK).json({ user: req.user });
