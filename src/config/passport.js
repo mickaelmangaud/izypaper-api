@@ -34,25 +34,23 @@ passport.use(new LocalStrategy(
         const foundUser = await UserDAO.findUserByEmail(username);
         logger.info(`[PASSPORT LocalStrategy]: Found user : ${JSON.stringify(foundUser)}`);
         if (!foundUser) {
-            // Ici il faudrait peut-être retourner une erreur
-            return done(null, false);
+            return done(new UnauthorizedError('User not found'), false);
         };
 
         if(!foundUser.active) {
-            logger.error(`[PASSPORT LocalStrategy]: Non active user`, !foundUser.active);
-            return done(new UnauthorizedError('User not active, please verify email adress'), false);
+            logger.error(`[PASSPORT LocalStrategy]: Non active user`);
+            return done(new UnauthorizedError('User not active, please check emails'), false);
         }
         
         const isMatch = await bcrypt.compare(password, foundUser.password);
         logger.info(`[PASSPORT LocalStrategy]: Matching user : ${isMatch}`);
         if (!isMatch) {
-            return done(new UnauthorizedError('Email ou mot de passe incorrect'), false);
+            return done(new UnauthorizedError('Bad credentials'), false);
         };
 
         const user = {
             id: foundUser._id,
             email: foundUser.email,
-            // roles: foundUser.roles
         };
 
         done(null, user);
@@ -65,17 +63,17 @@ passport.use(new GoogleStrategy({
     callbackURL: `${process.env.BASE_API_URL}/auth/google/callback`,
   },
   async (accessToken, refreshToken, profile, done) => {
-    logger.info(`[PASSPORT GoogleStrategy]: Profile`, profile);
+    logger.info(`[PASSPORT GoogleStrategy]: Profile : `, profile);
 
     const foundUser = await UserDAO.findByGoogleId(profile.id);
     logger.info(`[PASSPORT GoogleStrategy]: Found user : ${JSON.stringify(foundUser)}`);
         if (!foundUser) {
             const createdUser = await UserDAO.createGoogleUser({
-                firstName: profile._json.given_name,
-                lastName: profile._json.family_name,
+                googleID: profile.id,
                 email: profile._json.email,
                 password: 'none',
-                googleID: profile.id
+                firstName: profile._json.given_name,
+                lastName: profile._json.family_name,
             });
             return done(null, createdUser);
         };

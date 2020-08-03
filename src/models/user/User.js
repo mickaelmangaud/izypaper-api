@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
-  locale: String,
+  locale: { 
+    type: String, required: false 
+  },
   active: { 
     type: Boolean, required: true, default: false 
   },
@@ -12,12 +14,12 @@ const UserSchema = new mongoose.Schema({
     type: String, required: true, unique: true 
   },
   password: { 
-    type: String, required: true 
+    type: String, required: false 
   },
   roles: { 
     type: [String],
     enum: ['ADMIN', 'USER', 'GUEST'],
-    required: true 
+    required: true,
   },
   firstName: {
     type: String, required: false,
