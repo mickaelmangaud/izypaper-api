@@ -13,7 +13,7 @@ const validateLogin = ajv.compile(loginSchema);
 
 const router = Router({ });
 
-router.post('/register', async (req, res, next) => {
+router.put('/register', async (req, res, next) => {
 	logger.info(`[/auth/register]: user register with payload: ${JSON.stringify(req.body)}`);
 
 	const valid = validateRegister(req.body);
