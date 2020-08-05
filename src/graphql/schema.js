@@ -26,19 +26,18 @@ export default gql`
     email: String!
     password: String!
     roles: [Role!]! 
-    locale: String
     firstName: String
-    lastName: String!
+    lastName: String
     googleID: String
     facebookID: String
     avatarURL: String
   }
 
   input UserInput {
-    firstName: String!
-    lastName: String!
+    firstName: String
+    lastName: String
     email: String!
-    password: String!
+    password: String
     roles: [Role]! = [USER]
   }
 `;
