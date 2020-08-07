@@ -113,7 +113,7 @@ router.get('/logout', (req, res, next) => {
 		}
 
 		req.logout();
-		res.clearCookie('connect.sid');
+		res.clearCookie('izypaper.sid');
 		return res.end();
 	});
 });
@@ -124,6 +124,9 @@ router.get('/user', (req, res, next) => {
 		logger.error('[/auth/user] Error: No user in req');
 		return next(new UnauthorizedError('User not authentified'));
 	}
+
+	delete req.user.roles
+
   	res.status(OK).json({ user: req.user });
 });
 

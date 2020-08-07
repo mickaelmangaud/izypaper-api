@@ -5,6 +5,7 @@ import { logger } from '../utils';
 
 const Query = {
   currentUser: async (parent, args, context, info) => {
+    logger.info(`[QUERY: currentUser] with context : ${JSON.stringify(context)}`);
     if (!context.user) {
       logger.error(`[QUERY: currentUser]: User object not present in request, please login`);
       throw new AuthenticationError(`User not identified`);
