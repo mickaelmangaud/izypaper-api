@@ -60,13 +60,13 @@ router.put('/register', async (req, res, next) => {
 });
 
 router.get('/validate/:string', async (req, res, next) => {
-	logger.info(`[/auth/register/:string]: Account validation requested with :string : ${req.params.token}`);
-	const token = req.params.token;
+	logger.info(`[/auth/register/:string]: Account validation requested with :string : ${req.params.string}`);
+	const string = req.params.string;
   
-	const foundUser = await UserDAO.findUserByValidationString(token);
+	const foundUser = await UserDAO.findUserByValidationString(string);
 	logger.info(`[/auth/register/:string] Account validation found user : ${JSON.stringify(foundUser)}`);
 	if (!foundUser) {
-		return next(new InvalidPayloadError('Bad token'));
+		return next(new InvalidPayloadError('Bad string'));
 	}
 
 	await UserDAO.setActive(foundUser._id);
