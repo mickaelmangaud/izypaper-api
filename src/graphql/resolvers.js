@@ -4,26 +4,28 @@ import bcrypt from 'bcryptjs';
 import { logger } from '../utils';
 
 const Query = {
-  currentUser: async (parent, args, context, info) => {
+  currentUser: async (parent, args, context) => {
     logger.info(`[QUERY: currentUser] with context : ${JSON.stringify(context)}`);
-    if (!context.user) {
-      logger.error(`[QUERY: currentUser]: User object not present in request, please login`);
-      throw new AuthenticationError(`User not identified`);
-    }
+    // if (!context.user) {
+    //   logger.error(`[QUERY: currentUser]: User object not present in request, please login`);
+    //   throw new AuthenticationError(`User not identified`);
+    // }
     return await UserDAO.findById(context.user.id);
   },
 
-  user: async (_, {id}, ctx) => {
+  user: async (_, { id }) => {
+    logger.info(`[QUERY: user] with id : ${id}`);
     return await UserDAO.findById(id);
   },
 
-  users: async (_, {}, ctx) => {
+  users: async () => {
+    logger.info(`[QUERY: users]`);
     return await UserDAO.findAll();
   },
 }
 
 const Mutation = {
-  createUser: async (_, {input}) => {
+  createUser: async (_, { input }) => {
     // TODO: valider le payload car (entre autres) un password vide passe
     
     const foundUser = await UserDAO.findUserByEmail(input.email);
@@ -43,9 +45,9 @@ const Mutation = {
     return await UserDAO.findUserByEmail(input.email);
   },
 
-  deleteUser: async (_, {id}) => await UserDAO.delete(id),
+  deleteUser: async (_, { id }) => await UserDAO.delete(id),
   
-  updateUser: async (_, {id, input}) => await UserDAO.update(id, input),
+  updateUser: async (_, { id, input }) => await UserDAO.update(id, input),
 }
 
 export default {

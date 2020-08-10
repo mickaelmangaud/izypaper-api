@@ -35,7 +35,7 @@ passport.use(new LocalStrategy(
         logger.info(`[PASSPORT LocalStrategy]: Found user : ${JSON.stringify(foundUser)}`);
         if (!foundUser) {
             return done(new UnauthorizedError('User not found'), false);
-        };
+        }
 
         if(!foundUser.active) {
             logger.error(`[PASSPORT LocalStrategy]: Non active user`);
@@ -46,7 +46,7 @@ passport.use(new LocalStrategy(
         logger.info(`[PASSPORT LocalStrategy]: Matching user : ${isMatch}`);
         if (!isMatch) {
             return done(new UnauthorizedError('Bad credentials'), false);
-        };
+        }
 
         const user = {
             id: foundUser._id,
@@ -76,7 +76,7 @@ passport.use(new GoogleStrategy({
                 lastName: profile._json.family_name,
             });
             return done(null, createdUser);
-        };
+        }
 
     return done(null, foundUser);
   }

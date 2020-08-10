@@ -86,7 +86,7 @@ router.post('/login', (req, res, next) => {
 		return next(new InvalidPayloadError('Invalid Payload error', validateLogin.errors));
 	}
 
-	passport.authenticate('local', (err, user, info) => {
+	passport.authenticate('local', (err, user) => {
 		if (err) return next(err);
 		if (!user) {
 			return next(new UnauthorizedError('Invalid credentials'));
@@ -106,7 +106,7 @@ router.get('/google/callback', passport.authenticate('google', {
 	successRedirect: `${process.env.CLIENT_URL}`
 }));
 
-router.get('/logout', (req, res, next) => {
+router.get('/logout', (req, res) => {
 	req.session.destroy(error => {
 		if (error) {
 			logger.error('[/auth/logout] Passport Logout Error', error);
@@ -127,7 +127,7 @@ router.get('/user', (req, res, next) => {
 
 	delete req.user.roles
 
-  	res.status(OK).json({ user: req.user });
+	res.status(OK).json({ user: req.user });
 });
 
 export default router;

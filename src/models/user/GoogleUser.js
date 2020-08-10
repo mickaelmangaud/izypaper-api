@@ -11,4 +11,3 @@ const GoogleUser = User.discriminator(
 );
 
 export default mongoose.model('GoogleUser');
-  

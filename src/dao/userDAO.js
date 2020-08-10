@@ -34,7 +34,7 @@ class UserDao {
   }
 
   async removeValidateString(id) {
-    return await User.updateOne({}, { $unset: { validateString: true }});
+    return await User.updateOne({ _id: id }, { $unset: { validateString: true }});
   }
 
   async delete(id) {
@@ -62,7 +62,7 @@ class UserDao {
       // .select('password')
   }
 
-  async findAll(query) {
+  async findAll(/* query */) {
     return await User.find({})
       // .limit(Number(query.limit) || 10)
       .select('-password');
