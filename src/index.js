@@ -17,7 +17,9 @@ import helmet from 'helmet';
 const app = express();
 
 /* Middlewares */
-app.use(helmet());
+if (env.NODE_ENV !== 'development') {
+  app.use(helmet());
+}
 app.use(helmet.hidePoweredBy());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
